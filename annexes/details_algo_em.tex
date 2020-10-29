@@ -1,0 +1,84 @@
+\section{Details of EM-based algorithm computations}\label{annexe:details_em}
+
+Recall that we denote with the upper script the iteration step, e.g., $\theta^{(n)}$ is the value of the parameter $\theta$ at step $n$ of the EM algorithm.
+By extension, if $f$ is a function of $\theta_1, \dots, \theta_m$, then we define $f^{(n)}\pars{\theta_1, \dots, \theta_m} \coloneqq f\pars{\theta_1^{(n)}, \dots, \theta_m^{(n)}}$.
+
+Recall also that we defined $P_{t,k}^{(n)}$ and $P_{t,p}^{(n)}$ as follow:
+\begin{equation*}
+    P_{t,k} = \frac{\mu_k}{\lambda_{k,p}(t)}
+\end{equation*}
+\begin{equation*}
+    P_{t,p} = \frac{\alpha_{k,p}\kappa_{k,p}\pars{t - t_*^{(p)}(t)}}{\lambda_{k,p}(t)}\1[t \geq t_1^{(p)}]
+\end{equation*}
+
+\paragraph{For $\mu_k$}
+\begin{equation}
+\begin{split}
+    & \partiald{}{\mu_k}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} = 0 \\
+    \Leftrightarrow &\sum_{t\in\mathcal{A}_k}\frac{1}{\lambda_{k,p}(t)} = T \\
+    \Leftrightarrow &\sum_{t\in\mathcal{A}_k}\frac{P_{t,k}^{(n)}}{\mu_k} = T \\
+    \Leftrightarrow &\mu_k^{(n+1)} = \frac{1}{T} \sum_{t\in\mathcal{A}_k} P_{t,k}^{(n)}
+\end{split}
+\end{equation}
+
+\paragraph{For $\alpha_{k,p}$}
+\begin{equation}
+\begin{split}
+    & \partiald{}{\alpha_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} = 0 \\
+    \Leftrightarrow &\sum_{t\in\mathcal{A}_{k,p}}\frac{\kappa_{k,p}(t - t_*^{(p)}(t))}{\lambda_{k,p}(t)} = n_p \\
+    \Leftrightarrow &\sum_{t\in\mathcal{A}_{k,p}}\frac{P_{t,p}^{(n)}}{\alpha_{k,p}} = n_p \\
+    \Leftrightarrow &\alpha_{k,p}^{(n+1)} = \frac{1}{n_p} \sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}
+\end{split}
+\end{equation}
+
+\paragraph{For $m_{k,p}$}
+\begin{equation}
+\begin{split}
+    \partiald{}{m_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} &= -\sum_{t\in\mathcal{A}_{k,p}} \pars{\frac{t - t_*^{(p)}(t) - m_{k,p}}{\sigma_{k,p}^2} - \frac{C_m\pars{m_{k,p}, \sigma_{k,p},a,b}}{C\pars{m_{k,p}, \sigma_{k,p},a,b}}}\underbrace{\frac{\alpha_{k,p}\kappa_{k,p}(t)}{\lambda_{k,p}(t)}}_{=P_{t,p}} \\
+    &= -\frac{1}{\sigma_{k,p}^2} \sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t)} P_{t,p} \\
+    &+ \pars{\frac{m_{k,p}}{\sigma_{k,p}^2} + \frac{C_m\pars{m_{k,p}, \sigma_{k,p},a,b}}{C\pars{m_{k,p}, \sigma_{k,p},a,b}}} \sum_{t\in\mathcal{A}_{k,p}} P_{t,p}
+\end{split}
+\end{equation}
+hence,
+\begin{equation}
+\begin{split}
+    &\partiald{}{m_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} = 0 \\
+    \Leftrightarrow &m_{k,p}^{(n+1)} = \frac{\sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t)} P_{t,p}^{(n)}}{\sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}} - {\sigma_{k,p}^{(n)}}^2 \frac{C_m\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}{C\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}
+\end{split}
+\end{equation}
+
+\paragraph{For $\sigma_{k,p}$}
+\begin{equation}
+\begin{split}
+    \partiald{}{\sigma_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} &= -\sum_{t\in\mathcal{A}_{k,p}} \pars{\frac{\pars{t - t_*^{(p)}(t) - m_{k,p}}^2}{\sigma_{k,p}^3} - \frac{C_\sigma\pars{m_{k,p}, \sigma_{k,p},a,b}}{C\pars{m_{k,p}, \sigma_{k,p},a,b}}}\underbrace{\frac{\alpha_{k,p}\kappa_{k,p}(t)}{\lambda_{k,p}(t)}}_{=P_{t,p}} \\
+    &= -\frac{1}{\sigma_{k,p}^3} \sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t) - m_{k,p}}^2 P_{t,p} \\
+    &+  \frac{C_\sigma\pars{m_{k,p}, \sigma_{k,p},a,b}}{C\pars{m_{k,p}, \sigma_{k,p},a,b}} \sum_{t\in\mathcal{A}_{k,p}} P_{t,p}
+\end{split}
+\end{equation}
+hence,
+\begin{equation}
+\begin{split}
+    &\partiald{}{\sigma_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} = 0 \\
+    \Leftrightarrow &\sigma_{k,p}^{(n+1)} = \pars{\frac{C\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}{C_\sigma\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}} \frac{\sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t) - m_{k,p}}^2 P_{t,p}^{(n)}}{\sum_{t\in\mathcal{A}_{k,p}}  P_{t,p}^{(n)}}}^{1/3}
+\end{split}
+\end{equation}
+
+\paragraph{Link to gradient descent}
+TODO: dire que l'on peut, pour les trois premiers coefficients, voir l'algorithme EM comme un GD (remttre rapidement la formule de mise à jour des coefs), où le step parameter $\nu$ vaut une certaine valeur
+
+\begin{equation}
+    \mu_k^{(n+1)} - \mu_k^{(n)} = -\frac{\mu_k^{(n)}}{T} \partiald{}{\mu_k}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}}
+\end{equation}
+
+\begin{equation}
+    \alpha_{k,p}^{(n+1)} - \alpha_{k,p}^{(n)} = -\frac{\alpha_{k,p}^{(n)}}{n_p} \partiald{}{\alpha_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}}
+\end{equation}
+
+\begin{equation}
+    \begin{split}
+        m_{k,p}^{(n+1)} - m_{k,p}^{(n)} &=\frac{\sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t)} P_{t,p}^{(n)}}{\sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}} - {\sigma_{k,p}^{(n)}}^2 \frac{C_m\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}{C\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}} - m_{k,p}^{(n)} \\
+        &= \frac{1}{\sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}}\sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t) - {\sigma_{k,p}^{(n)}}^2 \frac{C_m\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}{C\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}} - m_{k,p}^{(n)}} P_{t,p}^{(n)} \\
+        &= \frac{{\sigma_{k,p}^{(n)}}^2}{\sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}} \sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)} \pars{\frac{t - t_*^{(p)}(t) - m_{k,p}^{(n)}}{{\sigma_{k,p}^{(n)}}^2} - \frac{C_m\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}{C\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}} \\
+        &= - \frac{{\sigma_{k,p}^{(n)}}^2}{\sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}} \partiald{}{m_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}}
+    \end{split}
+\end{equation}

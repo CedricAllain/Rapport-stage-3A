@@ -1,0 +1,17 @@
+% Packages pour images et graphiques
+\usepackage{graphicx}   % inclusion des graphiques
+\usepackage{wrapfig}    % Dessins dans le texte.
+\usepackage{caption}    % Permet de personnaliser les styles des légendes.
+\usepackage{subcaption} % Permet d’insérer au sein d’une figure des sous-figures, chacune d’entre elles disposant d’une légende, en plus de la légende principale.
+\newcommand{\source}[1]{\vspace{-8pt} \caption*{ Source: {#1}} }
+
+\usepackage{color}
+\usepackage{array}
+\usepackage[table]{xcolor}
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+
+% Un package pour les dessins (utilisé pour l'environnement {code})
+\usepackage{tikz}     
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}

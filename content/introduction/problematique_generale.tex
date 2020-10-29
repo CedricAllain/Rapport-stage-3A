@@ -1,0 +1,20 @@
+\subsection{General problematic}
+
+As previously mentioned, the data that are mainly used by the person working in the Parietal team come from electroencephalography (EEG) and magnetoencephalography (MEG), two methods used to record neuronal activity of the brain.
+The M/EEG data we are interested in for the following of the report are acquired during experiments with human subjects, that consist in a recording of the neuronal activity for a duration around 3 to 7 minutes.
+In the following Section~\ref{data_in_electrophysiology}, more info will be given on how the brain neuronal activity is produced and recorded
+
+During the experiment, different type of external stimuli can be exercised on the subject, such as an auditory signal (left or right side, at different frequencies), a visual signal (left and right eye), the action to press a button, etc.
+The term external stimuli is opposed to an internal stimuli, where the subject would be ask to think at something or to think at doing something, without really doing it.
+In Section~\ref{res_real_data}, the data and the different types of stimuli will be presented in more detail.
+
+The main objective of this report is to model the temporal dependency between a specific stimulus and its neuronal response.
+To do so, we decompose the signal into recurring patterns, called \textit{atoms}, using to dictionary learning and convolutional sparse coding, as it will be presented in Section~\ref{meeg_decomposition}.
+More specifically, we would like to model the latency between external stimuli and neuronal responses, or, in other words, model how a given stimulus can `activate' a specific atom in the brain, and thus, find the atom(s) that have a high probability to be linked with a specific external stimulus.
+
+To respond to such a problematic, a new method will be introduced in Section~\ref{developed_method}, and it is based on temporal point process, more particularly on Hawkes processes.
+We called this new method \textit{driven temporal point process}.
+Before presenting our method, a background on point processes with a focus on temporal point processes will  be done  in Section~\ref{background_tpp}.
+
+%TODO:  what for? a possible practical application?
+ 

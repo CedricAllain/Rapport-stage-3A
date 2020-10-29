@@ -1,0 +1,29 @@
+\subsection{Model with truncated gaussian kernel}
+
+TODO : partir de la forme général du kernel, avec $\phi$, comme écrit dans Hawkes, puis dire que l'on choisit un kernel normal tronqué de façon à modéliser la latency entre le stimulus et son éventuelle réponse neuronale.
+Rajouter que pour l'instant on essaie de modéliser le lien entre un simulus p et un atome k, de façon à voir si ce dernier lui est lié ou non (on considère que toutes les autres influences sur l'atome k sont dans sa baseline)
+
+When driven by $e_p$, the dynamic of $z_k$'s counting process $N_t^{(k)} \coloneqq \sum_{t_k \in \mathcal{A}_k} \1[t_k \leq t]$ can be describe by its intensity: $\forall t\in\intervalleFF{0}{T}$,
+\begin{equation}\label{eq:intensity_definition}
+    \lambda_{k,p}(t) \equiv \lambda_{k}\pars{t \middle| \mathscr{F}_t^{(p)}} \coloneqq \lim_{\dint t \xrightarrow{} 0 }\frac{\proba{N_{t+\dint t}^{(k)} - N_t^{(k)} = 1}[\mathscr{F}_t^{(p)}]}{\dint t}
+\end{equation}
+
+\paragraph{Our model}
+\begin{equation}\label{eq:model_intensity}
+    \lambda_{k,p}(t)  = \mu_k + \alpha_{k,p}\kappa_{k,p}(t - t_*^{(p)}(t))\1[t \geq t_1^{(p)}]
+\end{equation}
+where $t_*^{(p)}(t) = \max\enstq{t'}{t' \in t^{(p)}, t' \leq t}$ denotes the timestamp of the last task of type $p$ occurred before ($\leq$) time $t$, and where $\kappa_{k,p}$ is the probability density function of a $\Norm[\bracks{a,b}]{m_{k,p}}{\sigma_{k,p}}$:
+\begin{equation}\label{eq:kernel_trunc_norm}
+    \kappa_{k,p}(x) \equiv \kappa(x ; m_{k,p}, \sigma_{k,p}, a, b)=\frac{1}{\sigma_{k,p}} \frac{\phi\left(\frac{x-m_{k,p}}{\sigma_{k,p}}\right)}{\Phi\left(\frac{b-m_{k,p}}{\sigma_{k,p}}\right)-\Phi\left(\frac{a-m_{k,p}}{\sigma_{k,p}}\right)} \1[a\leq x\leq b]
+\end{equation}
+where
+$$
+\phi(x) = \frac{1}{\sqrt{2\pi}}\exp\left(-\frac{1}{2}x^2\right)
+$$ 
+is the probability density function of the standard normal distribution, and
+$$
+\Phi(x) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^x \exp\left(-\frac{1}{2}t^2\right) \mathrm{d}t
+$$
+is its cumulative distribution function.
+
+Note that by definition, if $b=\infty$, then $\Phi\left(\frac{b-m_{k,p}}{\sigma_{k,p}}\right) = 1$, and similarly, if $a=-\infty$, then $\Phi\left(\frac{a-m_{k,p}}{\sigma_{k,p}}\right) = 0$.

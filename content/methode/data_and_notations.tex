@@ -1,0 +1,24 @@
+\subsection{Data and notations}
+
+TODO : Faire la distinction entre le modèle théorique (processus guidé et processus "guideur"), et l'application : les z\_k sont les processus guidés, et dans l'application on les obtient de telle manière [...] 
+
+\begin{itemize}
+    \item $\braces{z_k}_{k=1,\dots,K}$: the family of the $K$ atoms' activation vector.
+    $\forall k=1,\dots,K, z_k\in\R_+^\mathbf{T}$, where $\mathbf{T}$ is the total number of possible timestamps.
+    $\mathbf{T} \coloneqq T \times s_{freq}$, where $T$ is the total duration of the experimentation, and $s_{freq}$ is the sampling frequency for the collect of MEG data.
+    We define $\mathcal{A}_k \coloneqq \enstq{t\times s_{freq}^{-1}}{z_k(t)\geq\tau, t=1,\dots, \mathbf{T}}$ the set of all the timestamps of atom $k$'s activations, where $\tau$ is a pre-determined threshold used to filter out insignificant activations (e.g. $\tau = \num{0.7e-10}$).
+    
+    \item $\braces{e_p}_{p=1,\dots,P}$: the family of the $P$ types of tasks performed during the experimentation
+    \begin{equation*}
+        \forall t=1,\dots,\mathbf{T}, \quad e_p(t)=
+        \left\{
+		\begin{array}{ll}
+			1 & \mbox{if a task of type $p$ has occurred at the $t$-th timestamp}\\
+			0 & \mbox{otherwise}
+		\end{array}
+	\right.
+    \end{equation*}
+    
+    \item $t^{(p)} \coloneqq \enstq{t\times s_{freq}^{-1}}{e_p(t)=1, t=1,\dots, \mathbf{T}}$ denotes all the timestamps when a task of type $p$ occurred.
+    We thus have $t^{(p)} = \braces{t^{(p)}_1, \dots, t^{(p)}_{n_p}}$ sorted, i.e., $t^{(p)}_1 < t^{(p)}_2 < \dots < t^{(p)}_{n_p}$, where $n_p=\# t^{(p)}$ is the total number of task $p$ that has occurred during the experimentation, as $\# A$ denotes the cardinality of the set $A$.
+\end{itemize} 

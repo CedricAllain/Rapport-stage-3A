@@ -1,0 +1,51 @@
+\subsection{Hypotheses}
+
+TODO: rapide paragraphe pour introduire les hypothèses que l'on fait, on s'inscrit quand même dans un cadre particulier lié à M/EEG
+
+\begin{itemize}
+    \item In Equation~\eqref{eq:model_intensity}, the kernel's purpose is to capture the delay of the neurological response following an external stimulation.
+    This kernel is chosen to be a truncated normal of shape parameter $m$ and $\sigma$, respectively representing the mean and the standard deviation of such a delay.
+    Precisely, we suppose that we have:
+    \begin{equation}\label{eq:m_in_between}
+        a \leq m \leq b
+    \end{equation}
+    where $a$ and $b$ are respectively the lower and upper truncation values.
+    
+    \item The shape parameters of the kernel depend on the couple atom/task, i.e. $m\equiv m_{k,p}$ and $\sigma \equiv \sigma_{k,p}$, in order to better capture the specificity of a task and its neurological response (in time and in space).
+    
+    \item The truncation values $a$ and $b$ are the same for every atom $k$ and every task $p$.
+    The idea behind this hypothesis is that the neurological response cannot, in any case, be shorter than $a$ (e.g. $a = 50\times 10^{-3}$ second) nor be longer than $b$ (e.g. $b = 500\times 10^{-3}$ second)
+    
+    \item The tasks are far enough apart from each other such that the kernel is null right before every tasks, i.e.:
+    \begin{equation}\label{eq:separated_timestamps}
+        t_{i+1}^{(p)} - t_i^{(p)} > b, \quad \forall p=1,\dots,P, \quad \forall i=1,\dots, (n_p-1)
+    \end{equation}
+    In the M/EEG context, we say that the \textit{inter stimulus interval} (ISI) is larger than $b$.
+    
+    Note that with this hypothesis, the intensity can be rewritten similar as a auto-regressive point process:
+    \begin{equation}
+        \lambda_{k,p}(t)  = \mu_k + \alpha_{k,p}\sum_{t_i^{(p)} \leq t} \kappa_{k,p}(t - t_i^{(p)})
+    \end{equation}
+    indeed, as $t \geq t_*^{(p)}(t) > \dots > t_2^{(p)} > t_1^{(p)}$, then $\forall i, t_i^{(p)} < t_*^{(p)}(t)$
+    \begin{align*}
+        t - t_i^{(p)} &= t - t_{i+1}^{(p)} + t_{i+1}^{(p)} - t_i^{(p)} \\
+        &> t - t_{i+1}^{(p)} + b \\
+        &\geq b, \quad \text{as } t - t_{i+1}^{(p)}\geq 0
+    \end{align*}
+    and as by definition, $\forall x \geq b, \kappa_{k,p}(x)=0$, thus $\kappa_{k,p}(t - t_1^{(p)}) = 0$, and finally,
+    \begin{align*}
+        \sum_{t_i^{(p)} \leq t} \kappa_{k,p}(t - t_i^{(p)}) &= \kappa_{k,p}(t - t_1^{(p)}) + \kappa_{k,p}(t - t_2^{(p)}) + \dots + \kappa_{k,p}(t - t_*^{(p)}(t)) \\
+        &= 0 + 0 + \dots + \kappa_{k,p}(t - t_*^{(p)}(t))
+    \end{align*}
+    
+    \item The experimentation ends after every possible neurological response driven by a task, i.e.,
+    \begin{equation}\label{eq:long_duration}
+        \forall p=1,\dots,P, \quad T > t_{n_p}^{(p)} + b
+    \end{equation}
+    $$
+    \Leftrightarrow T > \maxx{p=1,\dots,P} t_{n_p}^{(p)} + b
+    $$
+    \item An atom can be driven by only one task, but a task can drive several atoms. TODO: oui et donc ? dire que c'est pour la première version du modèle
+    
+    \item The baseline intensity $\mu_k$ is fixed in time.
+\end{itemize}

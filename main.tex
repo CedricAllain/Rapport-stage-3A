@@ -1,0 +1,59 @@
+\documentclass[11pt, a4paper]{article}
+
+% Packages
+\input{packages/all_packages}
+
+% Permet de rentrer du code dans le document
+\input{code/listings}
+
+% New commands
+\input{custom_commands/maths_commands}
+\input{custom_commands/typo_commands}
+
+% le numéro est remis à 0 à chaque début de section
+\numberwithin{equation}{section}
+\numberwithin{figure}{section}
+
+\begin{document}
+
+\input{content/title_page}
+
+\selectlanguage{english} % main language
+
+\setcounter{tocdepth}{3} % Modifie le niveau de profondeur de la table des matières
+% Si 3 : affiche jusqu'au niveau \subsubsection inclus
+% Table des matières
+\tableofcontents
+\newpage
+
+% Permet de modifier l'espace entre les paragraphes pour la suite du document
+\setlength{\parskip}{5pt}
+\setlist{after=\vspace{\parskip}}
+
+% Abstract(s)
+\input{content/abstract/abstract}
+% Content
+\selectlanguage{english} % main language
+\input{content/introduction/introduction}
+\input{content/methode/methode}
+\input{content/resultats/resultats}
+\input{content/discussion}
+\input{content/conclusion}
+
+% Ajout des annexes
+\include{annexes/annexes}
+
+% Présentation nouvelles commandes
+%\input{custom_commands/presentation_custom_commands}
+
+% Bibliographie
+\newpage
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\bibliographystyle{alpha} % apalike, plain
+\bibliography{references}
+
+% Notes de synthèse
+\input{summary_notes/summary_notes}
+
+\end{document}

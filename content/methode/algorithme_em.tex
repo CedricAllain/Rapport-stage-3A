@@ -1,0 +1,156 @@
+\subsection{EM-based algorithm}
+
+TODO: dire ce que l'on veut faire, Inspired by \cite{lewis2011nonparametric, xu2016learning}
+
+\subsubsection{Computations of the coefficients update}
+
+\paragraph{Rewriting of the kernel $\kappa$}
+\begin{align*}
+    \kappa(x ; m, \sigma, a, b) &= \frac{1}{\sigma} \frac{\phi\left(\frac{x-m_}{\sigma_}\right)}{\Phi\left(\frac{b-m}{\sigma}\right)-\Phi\left(\frac{a-m}{\sigma}\right)} \1[a\leq x\leq b] \\
+    &= \frac{1}{\sigma}\frac{\e{-\frac{1}{2}\frac{\pars{x-m}^2}{\sigma^2}}}{\integ{\frac{a-m}{\sigma}}[\frac{b-m}{\sigma}]{\e{\frac{-t^2}{2}}}{t}} \1[a\leq x\leq b]\\
+    &= \frac{\e{-\frac{1}{2}\frac{\pars{x-m}^2}{\sigma^2}}}{\integ{a}[b]{\e{-\frac{1}{2}\frac{\pars{u-m}^2}{\sigma^2}}}{u}} \1[a\leq x\leq b], \quad t = \frac{u-m}{\sigma} \\
+    &= \frac{\e{-\frac{1}{2}\frac{\pars{x-m}^2}{\sigma^2}}}{C\pars{m,\sigma,a,b}} \1[a\leq x\leq b]
+\end{align*}
+where 
+\begin{align*}
+    C\pars{m,\sigma,a,b} &\coloneqq \integ{a}[b]{\e{-\frac{1}{2}\frac{\pars{u-m}^2}{\sigma^2}}}{u} \\
+    &= \sigma\sqrt{2\pi}\pars{\Phi\pars{\frac{b-m}{\sigma}} - \Phi\pars{\frac{a-m}{\sigma}}}
+\end{align*}
+and similarly, we denote by subscripts the partials derivatives:
+\begin{align*}
+    C_m\pars{m,\sigma,a,b} &\coloneqq \partiald{}{m} C\pars{m,\sigma,a,b} \\
+    &= \integ{a}[b]{\frac{u-m}{\sigma^2}\e{-\frac{1}{2}\frac{\pars{u-m}^2}{\sigma^2}}}{u} \\
+    &= \bracks{-\e{-\frac{1}{2}\frac{\pars{u-m}^2}{\sigma^2}}}_{a}^b \\
+    &= \e{-\frac{1}{2}\frac{\pars{a-m}^2}{\sigma^2}} - \e{-\frac{1}{2}\frac{\pars{b-m}^2}{\sigma^2}}
+\end{align*}
+and 
+\begin{align*}
+    C_\sigma\pars{m,\sigma,a,b} &\coloneqq \partiald{}{\sigma} C\pars{m,\sigma,a,b} \\
+    &= \integ{a}[b]{\frac{(u-m)^2}{\sigma^3}\e{-\frac{1}{2}\frac{\pars{u-m}^2}{\sigma^2}}}{u} \\
+    &= \bracks{-\frac{u-m}{\sigma}\e{-\frac{\pars{u-m}^2}{2\sigma^2}}}_{a}^b + \frac{1}{\sigma} \integ{a}[b]{\e{-\frac{1}{2}\frac{\pars{u-m}^2}{\sigma^2}}}{u} \\
+    &= \frac{a-m}{\sigma}\e{-\frac{\pars{a-m}^2}{2\sigma^2}} - \frac{b-m}{\sigma}\e{-\frac{\pars{b-m}^2}{2\sigma^2}} + \frac{1}{\sigma}C\pars{m,\sigma,a,b}
+\end{align*}
+
+\paragraph{Negative log-likelihood}
+From Equation~\eqref{eq:general_likelihood}, we can define the negative log-likelihood adapted for our specific problem:
+\begin{equation}
+    \mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} \coloneqq -\log L\left(\lambda_k, \mathscr{F}_{T}^{(p)}\right) = \int_{0}^{T} \lambda_{k,p}(s) \mathrm{d} s-\sum_{t\in\mathcal{A}_k} \log \lambda_{k,p}(t)
+\end{equation}
+
+Hypothesis \eqref{eq:separated_timestamps} implies that $\forall i=1,\dots,n_p - 1$,
+\begin{align*}
+    \integ{t_i^{(p)}}[t_{i+1}^{(p)}]{\kappa_{k,p}(s - t_*^{(p)}(s))\1[s \geq t_1^{(p)}]}{s} &= \underbrace{\integ{t_i^{(p)}}[t_i^{(p)}+a]{\kappa_{k,p}(s - t_i^{(p)})}{s}}_{=0} + \underbrace{\integ{t_i^{(p)}+a}[t_i^{(p)}+b]{\kappa_{k,p}(s - t_i^{(p)})}{s}}_{=1} \\
+    &+ \underbrace{\integ{t_i^{(p)}+b}[t_{i+1}^{(p)}]{\kappa_{k,p}(s - t_i^{(p)})}{s}}_{=0} \\
+    &= 1
+\end{align*}
+and hypothesis \eqref{eq:long_duration} implies that
+\begin{align*}
+    \integ{t_{n_p}^{(p)}}[T]{\kappa_{k,p}(s - t_*^{(p)}(s))\1[s \geq t_1^{(p)}]}{s} &= \underbrace{\integ{t_{n_p}^{(p)}}[t_{n_p}^{(p)} + a]{\kappa_{k,p}(s - t_{n_p}^{(p)})}{s}}_{=0} + \underbrace{\integ{t_{n_p}^{(p)}+a}[t_{n_p}^{(p)} + b]{\kappa_{k,p}(s - t_{n_p}^{(p)})}{s}}_{=1} \\
+    &+ \underbrace{\integ{t_{n_p}^{(p)}+b}[T]{\kappa_{k,p}(s - t_{n_p}^{(p)})}{s}}_{=0}\\
+    &= 1
+\end{align*}
+
+Thus,
+\begin{align*}
+    \integ{0}[T]{\lambda_{k,p}(s)}{s} &= \integ{0}[T]{\mu_k + \alpha_{k,p}\kappa_{k,p}(s - t_*^{(p)}(s))\1[s \geq t_1^{(p)}]}{s} \\
+    &= \mu_k T + \alpha_{k,p}\underbrace{\integ{0}[t_1^{(p)}]{ \kappa_{k,p}(s - t_*^{(p)}(s))\1[s \geq t_1^{(p)}]}{s}}_{=0} + \alpha_{k,p}\sum_{i=1}^{n_p -1} \integ{t_i^{(p)}}[t_{i+1}^{(p)}]{\kappa_{k,p}(s - t_i^{(p)})}{s} \\
+    &+ \alpha_{k,p}\integ{t_{n_p}^{(p)}}[T]{\kappa_{k,p}(s - t_{n_p}^{(p)})}{s} \\
+    &= \mu_k T + \alpha_{k,p}n_p
+\end{align*}
+
+Finally,
+\begin{equation}
+\begin{split}
+    \mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} &= \mu_k T + \alpha_{k,p}n_p \\
+    &- \sum_{t\in\mathcal{A}_k} \log \pars{\mu_k + \alpha_{k,p}\kappa_{k,p}(t - t_*^{(p)}(t); m_{k,p}, \sigma_{k,p})\1[t \geq t_1^{(p)}]}
+\end{split}
+\end{equation}
+
+TODO : calculer la complexité du calcul de la nll, comme fait dans la thèse de Martin
+
+Then the derivatives of the inverse log-likelihood with respect to the parameters are given by
+\begin{equation}
+    \partiald{}{\mu_k}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} = T - \sum_{t\in\mathcal{A}_k}\frac{1}{\lambda_{k,p}(t)}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+    \partiald{}{\alpha_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} &= n_p - \sum_{t\in\mathcal{A}_k}\frac{\kappa_{k,p}(t - t_*^{(p)}(t))}{\lambda_{k,p}(t)}\1[t \geq t_1^{(p)}] \\
+    &= n_p - \sum_{t\in\mathcal{A}_k, t \geq t_1^{(p)}}\frac{\kappa_{k,p}(t - t_*^{(p)}(t))}{\lambda_{k,p}(t)}
+\end{split}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+    \partiald{}{m_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} &= -\sum_{t\in\mathcal{A}_k}\frac{\alpha_{k,p}}{\lambda_{k,p}(t)}\partiald{}{m_{k,p}}\kappa_{k,p}(t - t_*^{(p)}(t); m_{k,p}, \sigma_{k,p}, a, b)\1[t \geq t_1^{(p)}] \\
+    &= -\sum_{t\in\mathcal{A}_k, t \geq t_1^{(p)}}\frac{\alpha_{k,p}}{\lambda_{k,p}(t)}\partiald{}{m_{k,p}}\kappa_{k,p}(t - t_*^{(p)}(t); m_{k,p}, \sigma_{k,p}, a, b)
+\end{split}
+\end{equation}
+where
+\begin{equation}
+    \partiald{}{m}\kappa(x ; m, \sigma, a, b) = \pars{\frac{x-m}{\sigma^2} - \frac{C_m\pars{m, \sigma,a,b}}{C\pars{m, \sigma,a,b}}}\kappa(x ; m, \sigma, a, b)
+\end{equation}
+
+\begin{equation}
+\begin{split}
+    \partiald{}{\sigma_{k,p}}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} &= -\sum_{t\in\mathcal{A}_k}\frac{\alpha_{k,p}}{\lambda_{k,p}(t)}\partiald{}{\sigma_{k,p}}\kappa_{k,p}(t - t_*^{(p)}(t); m_{k,p}, \sigma_{k,p}, a, b)\1[t \geq t_1^{(p)}] \\
+    &= -\sum_{t\in\mathcal{A}_k, t \geq t_1^{(p)}}\frac{\alpha_{k,p}}{\lambda_{k,p}(t)}\partiald{}{\sigma_{k,p}}\kappa_{k,p}(t - t_*^{(p)}(t); m_{k,p}, \sigma_{k,p}, a, b)
+\end{split}
+\end{equation}
+where
+\begin{equation}
+    \partiald{}{\sigma}\kappa(x ; m, \sigma, a, b) = \pars{\frac{(x-m)^2}{\sigma^3} - \frac{C_\sigma\pars{m, \sigma,a,b}}{C\pars{m, \sigma,a,b}}}\kappa(x ; m, \sigma, a, b)
+\end{equation}
+
+To lighten notations, we define $\mathcal{A}_{k,p} = \enstq{t}{t\in\mathcal{A}_k, t \geq t_1^{(p)}}$ as the set of atom $k$'s activation timestamps that occur after the first timestamps of task $p$.
+In other words, $\mathcal{A}_{k,p}$ is the set of all atom $k$'s activations that might have been driven by a task of type $p$.
+
+\paragraph{Expectation step}
+Let $P_{t,k}$ be the probability that the activation at time $t$ has been triggered by the baseline intensity of atom $k$, and $P_{t,p}$ be that probability that the activation at time $t$ has been triggered by the driver $p$ (the task $p$ in our case).
+\begin{equation}
+    P_{t,k} = \frac{\mu_k}{\lambda_{k,p}(t)}
+\end{equation}
+\begin{equation}
+    P_{t,p} = \frac{\alpha_{k,p}\kappa_{k,p}\pars{t - t_*^{(p)}(t)}}{\lambda_{k,p}(t)}\1[t \geq t_1^{(p)}]
+\end{equation}
+
+\paragraph{Maximisation step} Details of the computation are present in Appendix~\ref{annexe:details_em}.
+
+\begin{equation}
+    \mu_k^{(n+1)} = \frac{1}{T} \sum_{t\in\mathcal{A}_k} P_{t,k}^{(n)}
+\end{equation}
+
+\begin{equation}
+    \alpha_{k,p}^{(n+1)} = \frac{1}{n_p} \sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}
+\end{equation}
+
+\begin{equation}
+    m_{k,p}^{(n+1)} = \frac{\sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t)} P_{t,p}^{(n)}}{\sum_{t\in\mathcal{A}_{k,p}} P_{t,p}^{(n)}} - {\sigma_{k,p}^{(n)}}^2 \frac{C_m\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}{C\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}
+\end{equation}
+
+\begin{equation}
+    \sigma_{k,p}^{(n+1)} = \pars{\frac{C\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}}{C_\sigma\pars{m_{k,p}^{(n)}, \sigma_{k,p}^{(n)},a,b}} \frac{\sum_{t\in\mathcal{A}_{k,p}} \pars{t - t_*^{(p)}(t) - m_{k,p}}^2 P_{t,p}^{(n)}}{\sum_{t\in\mathcal{A}_{k,p}}  P_{t,p}^{(n)}}}^{1/3}
+\end{equation}
+
+\paragraph{Remark} If $\alpha_{k,p} = 0$, then the intensity is reduced to its baseline, $\lambda_{k,p}(t) = \mu_k$, and then the negative log-likelihood is:
+\begin{equation}
+    \mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}} = \mu_k T -\sum_{t\in\mathcal{A}_k} \log \mu_k = \mu_k T - \#\mathcal{A}_k \log \mu_k
+\end{equation}
+Thus, we can directly compute the maximum likelihood estimator (MLE) for $\mu_k$, as follow:
+\begin{equation}
+    \mu_k^{(MLE)} = \frac{\#\mathcal{A}_k}{T}
+\end{equation}
+
+\subsubsection{Parameters initialisation}
+
+\paragraph{Random initialisation}
+
+TODO
+
+\paragraph{Smart initialisation}
+
+TODO
+
+More details on the role of the $\alpha$ coefficient and how its initialisation function was determined are presented in Appendix~\ref{app:role_alpha_coef}
+
+

@@ -1,0 +1,177 @@
+\section*{Présentation et test des nouvelles commandes}
+
+Cette section a pour but de montrer quelles sont les nouvelles commandes qui ont été ajoutées à ce document.
+
+\subsection*{Commandes pour les mathématiques}
+Commandes pour l'écriture des mathématiques, dans le fichier commandes\_math.tex
+
+\paragraph{Les ensembles} 
+\begin{itemize}
+    \item \verb=\N=  : \N
+    \item \verb=\Z= : \Z
+    \item \verb=\Q= : \Q
+    \item \verb=\R= : \R
+    \item \verb=\Complex= : \Complex
+\end{itemize}
+
+
+\paragraph{Les encadrements} Ces commandes permettent d'avoir une unique commande pour un même type de séparateur, dont la taille s'ajuste automatiquement au contenu : 
+\begin{itemize}
+    \item \verb=\angles{x}= : $\angles{x}$ et $$\angles{\sum_{i = 0}^{n}}$$
+    \item \verb=\braces{x}= : $\braces{x}$ et $$\braces{\sum_{i = 0}^{n}}$$
+    \item \verb=\bracks{x}= : $\bracks{x}$ et $$\bracks{\sum_{i = 0}^{n}}$$
+    \item \verb=\pars{x}= : $\pars{x}$ et $$\pars{\sum_{i = 0}^{n}}$$
+    \item \verb=\norme{x}= : $\norme{x}$ et $$\norme{\sum_{i = 0}^{n}}$$
+    \item \verb=\ent{x}= : $\ent{x}$ et $$\ent{\sum_{i = 0}^{n}}$$
+    \item \verb=\entsup{x}= : $\entsup{x}$ et $$\entsup{\sum_{i = 0}^{n}}$$
+    \item \verb=\abs{x}= : $\abs{x}$ et $$\abs{\sum_{i = 0}^{n}}$$
+\end{itemize}
+
+\paragraph{Les dérivées} Permet de gérer facilement les degrés de dérivation, ce dernier étant un argument optionnel, passé par défaut à vide :
+\begin{itemize}
+    \item \verb=\deriv{f(x)}{x}= : $$\deriv{f(x)}{x}$$
+    \item \verb=\deriv[2]{f(x)}{x}= : $$\deriv[2]{f(x)}{x}$$
+    \item \verb=\partiald{f(x)}{x}= : $$\partiald{f(x)}{x}$$
+    \item \verb=\partiald[2]{f(x)}{x}= : $$\partiald[2]{f(x)}{x}$$
+\end{itemize}
+
+\paragraph{Intervalles} Différents types d'intervalles :
+\begin{itemize}
+    \item \verb=\intervalleOO{a}{b}= : $\intervalleOO{a}{b}$
+    \item \verb=\intervalleFF{a}{b}= : $\intervalleFF{a}{b}$
+    \item \verb=\intervalleOF{a}{b}= : $\intervalleOF{a}{b}$
+    \item \verb=\intervalleFO{a}{b}= : $\intervalleFO{a}{b}$
+    \item \verb=\intervalleEntier{a}{b}= : $\intervalleEntier{a}{b}$
+\end{itemize}
+
+\paragraph{Probabilités} Les notations utiles en probabilité (les arguments entre crochets sont optionnels, et peuvent donc être enlevés) : ce qui est valable pour \verb=\proba= l'est également pour \verb=\esp=, \verb=\var=, \verb=\cov= et \verb=\corr=.
+\begin{itemize}
+    \item \verb=\proba{}= : $\proba{}$
+    \item \verb=\proba{X}= : $\proba{X}$
+    \item \verb=\proba{X}[Y]= : $\proba{X}[Y]$
+    \item \verb=\proba[\lambda]{X}[Y]= : $\proba[\lambda]{X}[Y]$
+    \item \verb=\esp[\lambda]{X}[Y]= : $\esp[\lambda]{X}[Y]$
+    \item \verb=\var[\lambda]{X}[Y]= : $\var[\lambda]{X}[Y]$
+    \item \verb=\cov[\lambda]{X}{Y}[Z]= : $\cov[\lambda]{X}{Y}[Z]$
+    \item \verb=\corr[\lambda]{X}{Y}= : $\corr[\lambda]{X}{Y}$
+\end{itemize}
+
+\paragraph{Lois de probabilités} Les différentes lois usuelles
+\begin{itemize}
+    \item \verb=\Ber{p}= : $\Ber{p}$
+    \item \verb=\Binom{n}{p}= : $\Binom{n}{p}$
+    \item \verb=\Poisson{\lambda}= : $\Poisson{\lambda}$
+    \item \verb=\Geo{\lambda}= : $\Geo{\lambda}$
+    \item \verb=\Unif{\intervalleFF{0}{1}}= : $\Unif{\intervalleFF{0}{1}}$
+    \item \verb=\Exp{\lambda}= : $\Exp{\lambda}$
+    \item \verb=\Norm[d]{\mu}{\sigma}= : $\Norm[d]{\mu}{\sigma}$
+    \item \verb=\Gam{\alpha}{\theta}= : $\Gam{\alpha}{\theta}$
+    \item \verb=\Betaloi{\alpha}{\theta}= : $\Betaloi{\alpha}{\theta}$
+    \item \verb=\Pareto{r}{c}= : $\Pareto{r}{c}$
+    \item \verb=\Laplace{\theta}= : $\Laplace{\theta}$
+    \item \verb=\Cauchy{\theta}= : $\Cauchy{\theta}$
+\end{itemize}
+
+
+\paragraph{Égalités}
+\begin{itemize}
+    \item \verb=X \egalloi Y= : $X \egalloi Y$
+    \item \verb=X \egalprob Y= : $X \egalprob Y $
+    \item \verb=X \egaltxt{ipp} Y= : $X \egaltxt{ipp} Y $
+    \item \verb=X \simiid Y= : $X \simiid Y $
+\end{itemize}
+
+\paragraph{max, min, argmax et argmin avec subscript} 
+\begin{itemize}
+    \item \verb=\maxx{x<2}= : $\maxx{x<2}$
+    \item \verb=\minn{x<2}= : $\minn{x<2}$
+    \item \verb=\argmax= : $\argmax$
+    \item \verb=\argmax[x<2]= : $\argmax[x<2]$
+    \item \verb=\argmin= : $\argmin$
+    \item \verb=\argmin[x<2]= : $\argmin[x<2]$
+\end{itemize}
+
+\paragraph{Limites} Ce ne sont pas des nouvelles commandes, c'est juste pour rappel
+\begin{itemize}
+    \item \verb=\lim\limits_{x\to+\infty}= : $\lim\limits_{x\to+\infty}$
+    \item \verb=\limsup\limits_{x\to+\infty}{f\pars{\frac{1}{x}}}= : $\limsup\limits_{x\to+\infty}{f\pars{\frac{1}{x}}}$
+    \item \verb=\varliminf, \varlimsup,\varinjlim= : $\varliminf, \varlimsup,\varinjlim$
+\end{itemize}
+
+\paragraph{Matrices} Commandes pour matrices simples et vecteurs
+\begin{itemize}
+    \item \verb=\mattroisdiag{a}{b}{c}= : $$\mattroisdiag{a}{b}{c}$$
+    \item \verb=\vecteur{AB}= : $$\vecteur{AB}$$
+    \item \verb=\coord{AB}{12\\21}= : $$\coord{AB}{12\\21}$$
+    \item \verb=\coord{BC}{21\\12\\32}= : $$\coord{BC}{21\\12\\32}$$
+\end{itemize}
+
+
+\paragraph{Intégration} La borne supérieure de l'intégrale est optionnelle
+\begin{itemize}
+    \item \verb=\dint x= : $\dint x$
+    \item \verb=\integ{0}[+\infty]{f(x)}{x}= : $$\integ{0}[+\infty]{f(x)}{x}$$
+    \item \verb=\integ{\mathcal{X}}{f(x)}{x}= : $$\integ{\mathcal{X}}{f(x)}{x}$$
+\end{itemize}
+
+
+\paragraph{Fonctions} Permet de définir rapidement une fonction
+
+\verb=\fonction{f}{E}{F}{x}{f(x)}= : $$\fonction{f}{E}{F}{x}{f(x)}$$
+
+\verb=\twopartdef{x}{x \geq 0}{-x}{x < 0}= : $$ \twopartdef { x } {x \geq 0} {-x} {x < 0}$$
+
+\subparagraph{Remarque} Fonctionne de la même façon avec \verb=\threepartdef= puis en mettant 6 arguments au lieu de 4.
+
+\paragraph{Divers}
+\begin{itemize}
+    \item \verb=\e{x}= : $\e{x}$
+    \item \verb=\enstq{x}{x<2}= : $\enstq{x}{x<2}$
+    \item \verb=\1= : $\1$
+    \item \verb=\1[x<2]= : $\1[x<2]$
+    \item \verb=\moy{x}= : $\moy{x}$
+    \item \verb=\moyy{x}= : $\moyy{x}$
+    \item \verb=\surf{10}= : $\surf{10}$
+    \item \verb=\surf{10}[cm]= : $\surf{10}[cm]$
+    \item \verb=\vol{10}= : $\vol{10}$
+    \item \verb=\vol{10}[cm]= : $\vol{10}[cm]$
+\end{itemize}
+
+
+\subsection*{Commandes pour la \guill{typographie}}
+
+Commandes pour le respect des règles typographiques françaises, et quelques abréviations.
+
+\paragraph{Chiffres romains et siècle}
+\begin{itemize}
+    \item \verb=\cRM{5}= : \cRM{5}
+    \item \verb=\cRm{5}= : \cRm{5}
+    \item \verb=\crm{5}= : \crm{5}
+    \item \verb=\siecle{1}= : \siecle{1}
+    \item \verb=\siecle{5}= : \siecle{5}
+\end{itemize}
+
+\paragraph{Abréviations} Abréviations utiles, qui respectent les règles typographiques
+\begin{itemize}
+    \item \verb=\ssi= : \ssi
+    \item \verb=\cad= : \cad
+    \item \verb=\cf= : \cf
+    \item \verb=\apjc= : \apjc
+    \item \verb=\avjc= : \avjc
+    \item \verb=\Mme Dupont= : \Mme Dupont
+    \item \verb=\Mlle Dupont= : \Mlle Dupont
+    \item \verb=\numero 5= : \numero 5
+    \item \verb=\Num 5= : \Num 5
+    \item \verb=\nums 5 et 6= : \nums 5 et 6
+    \item \verb=\Nums 5 et 6= : \Nums 5 et 6
+\end{itemize}
+
+\paragraph{Autres} Quelques autres commandes utiles
+\begin{itemize}
+    \item \verb=\guill{texte entre guillemets français}= : \guill{texte entre guillemets français}
+    \item \verb=\auteur{Victor}{Hugo}= : \auteur{Victor}{Hugo}
+\end{itemize}
+
+
+
+
