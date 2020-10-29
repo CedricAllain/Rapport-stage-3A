@@ -6,8 +6,8 @@ TODO: dire ce que l'on veut faire, Inspired by \cite{lewis2011nonparametric, xu2
 
 \paragraph{Rewriting of the kernel $\kappa$}
 \begin{align*}
-    \kappa(x ; m, \sigma, a, b) &= \frac{1}{\sigma} \frac{\phi\left(\frac{x-m_}{\sigma_}\right)}{\Phi\left(\frac{b-m}{\sigma}\right)-\Phi\left(\frac{a-m}{\sigma}\right)} \1[a\leq x\leq b] \\
-    &= \frac{1}{\sigma}\frac{\e{-\frac{1}{2}\frac{\pars{x-m}^2}{\sigma^2}}}{\integ{\frac{a-m}{\sigma}}[\frac{b-m}{\sigma}]{\e{\frac{-t^2}{2}}}{t}} \1[a\leq x\leq b]\\
+    \kappa(x ; m, \sigma, a, b) &= \frac{1}{\sigma} \frac{\phi\pars{\frac{x-m}{\sigma}}}{\Phi\pars{\frac{b-m}{\sigma}} - \Phi\pars{\frac{a-m}{\sigma}}} \1[a\leq x\leq b] \\
+    &= \frac{1}{\sigma} \frac{\e{-\frac{1}{2} \frac{\pars{x-m}^2}{\sigma^2}}}{\integ{\frac{a-m}{\sigma}}[\frac{b-m}{\sigma}]{\e{\frac{-t^2}{2}}}{t}} \1[a\leq x\leq b] \\
     &= \frac{\e{-\frac{1}{2}\frac{\pars{x-m}^2}{\sigma^2}}}{\integ{a}[b]{\e{-\frac{1}{2}\frac{\pars{u-m}^2}{\sigma^2}}}{u}} \1[a\leq x\leq b], \quad t = \frac{u-m}{\sigma} \\
     &= \frac{\e{-\frac{1}{2}\frac{\pars{x-m}^2}{\sigma^2}}}{C\pars{m,\sigma,a,b}} \1[a\leq x\leq b]
 \end{align*}
