@@ -9,7 +9,7 @@ A point process is a random element whose values are point patterns on a set $S$
 Let $X_S$ be the set of locally finite counting measures on $S$, and $\mathcal{N}_S$ the smallest $\sigma$-algebra on $X_S$ such that all point counts ${f_B: X_s \to \N, \omega \mapsto \#\pars{\omega \cap B}}$ are measurable for $B$ relatively compact in $\mathscr{B}$, where $\# A$ denotes the cardinality of the set $A$.
 A point process on $S$ is a measurable map $\xi$ from a probability space $\pars{\Omega, \mathcal{F}, \proba{}}$ to the measurable space $\pars{X_S, \mathcal{N}_S}$.
 
-Every realisation of a point process $\xi$ can be written as $\xi = \sum_{i=1}^n \delta_{X_i}$, where $\delta$ is the Dirac measure, $n$ is a integer-valued random variable and $X_i$'s are random elements of $S$.
+Every realisation of a point process $\xi$ can be written as $\xi = \sum_{i=1}^n \dirac_{X_i}$, where $\dirac$ is the Dirac measure, $n$ is a integer-valued random variable and $X_i$'s are random elements of $S$.
 A point process can be equivalently represented by a counting process $N\pars{B} \coloneqq \integ{B}{\xi (x)}{x}$ which basically is the number of event in each Borel subset $B\in\mathscr{B}$.
 The mean measure $M$ of a point process $\xi$ is a measure on $S$ that assigns to every $B\in\mathscr{B}$ the expected number of event of $\xi$ in $B$, i.e., $M\pars{B} \coloneqq \esp{N\pars{B}}$ for all $B\in\mathscr{B}$.
 
@@ -125,7 +125,7 @@ The likelihood function takes the more general form
 
 Note that this result could also be obtained by using the Equation~\eqref{eq:f_star_res}.
 
-\subsubsection{Hawkes processes}
+\subsubsection{Hawkes processes}\label{hawkes_processes}
 
 In this section, we give the main definitions and properties of Hawkes processes and multivariate Hawkes processes and set the notations that will be used if the in the rest of the report.
 Hawkes processes~\citep{hawkes1971point, hawkes1974cluster} are temporal point processes in which the intensity depends on the process history with an excitation mechanism.

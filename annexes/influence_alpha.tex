@@ -1,9 +1,9 @@
 \section{The role of the \texorpdfstring{$\alpha$}{TEXT} coefficient in the intensity function}\label{app:role_alpha_coef}
 
-On cherche ici à déterminer une approche intuitive du rôle du coefficient $\alpha$ dans l'intensité (TODO : mettre la ref de l'équation).
-Le but de cette démarche est d'arriver à déterminer une fonction qui permettra d'initialiser le paramètre $\alpha$ pour l'algorithme EM, pour la \textit{smart init}, comme il a été fait pour le coefficient $\mu$ de la baseline.
-Pour se faire, on part de l'Algorithme~\ref{algo:1d_inhomogenous_pp}, qui nous permet de simuler un processus de Poisson non-homogène à l'aide d'une fonction d'intensité déterminée.
-Le coefficient $\alpha$ intervient à deux endroits dans cette algorithme : lors de la détermination de $\Bar{\lambda} = \max_{0 \leq t \leq T} \lambda(t)$, et lors de l'acceptation, ou non, des points $s_{m+1}$.
+Here we seek to determine an intuitive approach to the role of the coefficient $\alpha$ in intensity, Eq.~\refeq{eq:intensity_definition}.
+The goal of this approach is to determine a function that will allow to initialize the $\alpha$ parameter for the EM algorithm, for the \textit{smart init}, as it has been done for the $\mu$ coefficient of the baseline.
+The starting point is the Algorithm~\ref{algo:1d_inhomogenous_pp}, which allows us to simulate a non-homogenous Poisson process using a given intensity function.
+The coefficient $\alpha$ intervenes at two places in this algorithm: when determining $\Bar{\lambda} = \max_{0 \leq t} \lambda(t)$, and upon acceptance, or not, of the points $s_{m+1}$.
 
 Comme évoqué précédemment (TODO : mettre la ref de l'équation de $\Bar{\lambda}$ adapté à notre modèle), $\Bar{\lambda} = \mu_k + \alpha_{k,p}\kappa_{k,p}\pars{m_{k,p}}$, ainsi, plus le coefficient $\alpha$ est grand, plus l'intensité maximale sur l'intervalle $\intervalleFF{0}{T}$ est élevée.
 Pour les points sélectionnés $s_{m+1}$, deux cas sont à considérés : lorsque les points sont sur la baseline et lorsque les points sont sur les supports des différents kernels.

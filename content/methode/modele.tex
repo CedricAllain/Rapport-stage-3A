@@ -1,18 +1,20 @@
 \subsection{Model with truncated gaussian kernel}
 
 TODO : partir de la forme général du kernel, avec $\phi$, comme écrit dans Hawkes, puis dire que l'on choisit un kernel normal tronqué de façon à modéliser la latency entre le stimulus et son éventuelle réponse neuronale.
-Rajouter que pour l'instant on essaie de modéliser le lien entre un simulus p et un atome k, de façon à voir si ce dernier lui est lié ou non (on considère que toutes les autres influences sur l'atome k sont dans sa baseline)
+Rajouter que pour l'instant on essaie de modéliser le lien entre un simulus p et un atome k, de façon à voir si ce dernier lui est lié ou non (on considère que toutes les autres influences sur l'atome k sont dans sa baseline).
+Dire aussi que l'on fait l'hypothèse que, à l'inverse des processus de Hawkes avec un noyau exponentiel, où tous les events passés influent sur l'intensité présente, dans notre modèle seul le dernier event du driver à l'instant t peut avoir une influence sur l'intensité du temporal point processes qui lui est éventuellement lié (on dit toujours éventuellement cas on essaie justement d'exhiber une telle relation).
 
 When driven by $e_p$, the dynamic of $z_k$'s counting process $N_t^{(k)} \coloneqq \sum_{t_k \in \mathcal{A}_k} \1[t_k \leq t]$ can be describe by its intensity: $\forall t\in\intervalleFF{0}{T}$,
 \begin{equation}\label{eq:intensity_definition}
     \lambda_{k,p}(t) \equiv \lambda_{k}\pars{t \middle| \mathscr{F}_t^{(p)}} \coloneqq \lim_{\dint t \xrightarrow{} 0 }\frac{\proba{N_{t+\dint t}^{(k)} - N_t^{(k)} = 1}[\mathscr{F}_t^{(p)}]}{\dint t}
 \end{equation}
+where $\mathscr{F}_t^{(p)} = \enstq{t_i \in t^{(p)}}{t_i < t}$ is the information available on $e_p$ up to, but not including, $t$.
 
 \paragraph{Our model}
 \begin{equation}\label{eq:model_intensity}
     \lambda_{k,p}(t)  = \mu_k + \alpha_{k,p}\kappa_{k,p}(t - t_*^{(p)}(t))\1[t \geq t_1^{(p)}]
 \end{equation}
-where $t_*^{(p)}(t) = \max\enstq{t'}{t' \in t^{(p)}, t' \leq t}$ denotes the timestamp of the last task of type $p$ occurred before ($\leq$) time $t$, and where $\kappa_{k,p}$ is the probability density function of a $\Norm[\bracks{a,b}]{m_{k,p}}{\sigma_{k,p}}$:
+where $t_*^{(p)}(t) = \max\enstq{t'}{t' \in t^{(p)}, t' \leq t}$ denotes the timestamp of the last task of type $p$ occurred before ($\leq$) time $t$, and where $\kappa_{k,p}$ is the probability density function of a truncated gaussian distribution of mean $m_{k,p}$ and standard deviation $\sigma_{k,p}$, with truncation values $\intervalleFF{a}{b}$, noted $\Norm[\bracks{a,b}]{m_{k,p}}{\sigma_{k,p}^2}$, namely,
 \begin{equation}\label{eq:kernel_trunc_norm}
     \kappa_{k,p}(x) \equiv \kappa(x ; m_{k,p}, \sigma_{k,p}, a, b)=\frac{1}{\sigma_{k,p}} \frac{\phi\left(\frac{x-m_{k,p}}{\sigma_{k,p}}\right)}{\Phi\left(\frac{b-m_{k,p}}{\sigma_{k,p}}\right)-\Phi\left(\frac{a-m_{k,p}}{\sigma_{k,p}}\right)} \1[a\leq x\leq b]
 \end{equation}

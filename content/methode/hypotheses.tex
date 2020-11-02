@@ -2,7 +2,7 @@
 
 TODO: rapide paragraphe pour introduire les hypothèses que l'on fait, on s'inscrit quand même dans un cadre particulier lié à M/EEG
 
-\begin{itemize}
+\begin{enumerate}
     \item In Equation~\eqref{eq:model_intensity}, the kernel's purpose is to capture the delay of the neurological response following an external stimulation.
     This kernel is chosen to be a truncated normal of shape parameter $m$ and $\sigma$, respectively representing the mean and the standard deviation of such a delay.
     Precisely, we suppose that we have:
@@ -14,7 +14,7 @@ TODO: rapide paragraphe pour introduire les hypothèses que l'on fait, on s'insc
     \item The shape parameters of the kernel depend on the couple atom/task, i.e. $m\equiv m_{k,p}$ and $\sigma \equiv \sigma_{k,p}$, in order to better capture the specificity of a task and its neurological response (in time and in space).
     
     \item The truncation values $a$ and $b$ are the same for every atom $k$ and every task $p$.
-    The idea behind this hypothesis is that the neurological response cannot, in any case, be shorter than $a$ (e.g. $a = 50\times 10^{-3}$ second) nor be longer than $b$ (e.g. $b = 500\times 10^{-3}$ second)
+    The idea behind this hypothesis is that the neurological response cannot, in any case, be shorter than $a$ (e.g., $a = \SI{30e-3}{\second}$) nor be longer than $b$ (e.g., $b = \SI{800e-3}{\second}$)
     
     \item The tasks are far enough apart from each other such that the kernel is null right before every tasks, i.e.:
     \begin{equation}\label{eq:separated_timestamps}
@@ -48,4 +48,8 @@ TODO: rapide paragraphe pour introduire les hypothèses que l'on fait, on s'insc
     \item An atom can be driven by only one task, but a task can drive several atoms. TODO: oui et donc ? dire que c'est pour la première version du modèle
     
     \item The baseline intensity $\mu_k$ is fixed in time.
-\end{itemize}
+    TODO: dire que la baseline est là de façon à capter toutes les sources exhogènes d'activation, en précisant qu'il n'y a pas de caractère auto-excitatoire, comme dans les Hawkes processes, et qui est une caractéristique forte de ce modèle.
+\end{enumerate}
+
+TODO: Préciser enfin que ces hypothèses peuvent facilement être remises en cause, amenant alors  la formulation d'un autre modèle, adapté, notamment sur le fait qu'il n'y ait qu'un driver, du caractère non-auto-excitatoire, etc.
+Notamment ces hypothèses sont remises en cause dans la partie \ref{model_extension_multiple_pp}, et snt discutées dans la partie Discusion/futur work
