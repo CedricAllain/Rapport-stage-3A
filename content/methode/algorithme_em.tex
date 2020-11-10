@@ -1,6 +1,12 @@
 \subsection{EM-based algorithm}
 
-TODO: dire ce que l'on veut faire, Inspired by \cite{lewis2011nonparametric, xu2016learning}
+As mentioned above, we would like to fit a model between an atom $k$ and a specific type of stimulus $p$ that would explain the activations of the atom, assuming that the stimulus $p$ might \say{drive} the atom $k$.
+It has been hypothesised that the activations of the atom $k$, when driven by the stimulus $p$ follow a temporal point process of intensity $\lambda_{k,p}$ as described in Equation~\eqref{eq:model_intensity}.
+To \say{fit} the model simply means that we need to find optimal values of the parameters of the intensity, namely $\mu_k, \alpha_{k,p}, m_{k,p}$ and $\sigma_{k,p}$, that minimise a certain metric, namely the negative log-likelihood.
+A way to find such optimal values is by doing a EM-based algorithm, inspired by such algorithm described in \citep{lewis2011nonparametric, xu2016learning} for similar problematic but with different approaches (Hawkes processes, exponential kernels, etc.).
+
+Computations of such an algorithm are detailed below, after a rewriting a the kernel formula, in order to simplify further computations.
+In addition, we present later on in Section~\ref{parameters_initialisation} two methods to initialise the parameters, a random one and a \say{smart} one.
 
 \subsubsection{Computations of the coefficients update}
 
@@ -66,7 +72,7 @@ Finally,
 \end{split}
 \end{equation}
 
-TODO : calculer la complexité du calcul de la nll, comme fait dans la thèse de Martin
+% TODO : calculer la complexité du calcul de la nll, comme fait dans la thèse de Martin
 
 Then the derivatives of the inverse log-likelihood with respect to the parameters are given by
 \begin{equation}
@@ -114,7 +120,10 @@ Let $P_{t,k}$ be the probability that the activation at time $t$ has been trigge
     P_{t,p} = \frac{\alpha_{k,p}\kappa_{k,p}\pars{t - t_*^{(p)}(t)}}{\lambda_{k,p}(t)}\1[t \geq t_1^{(p)}]
 \end{equation}
 
-\paragraph{Maximisation step} Details of the computation are present in Appendix~\ref{annexe:details_em}.
+\paragraph{Maximisation step} 
+In the following, we denote with the upper script the iteration step, e.g., $\theta^{(n)}$ is the value of the parameter $\theta$ at step $n$ of the EM algorithm.
+By extension, if $f$ is a function of $\theta_1, \dots, \theta_m$, then we define $f^{(n)}\pars{\theta_1, \dots, \theta_m} \coloneqq f\pars{\theta_1^{(n)}, \dots, \theta_m^{(n)}}$.
+Details of the computation are present in Appendix~\ref{annexe:details_em}.
 
 \begin{equation}
     \mu_k^{(n+1)} = \frac{1}{T} \sum_{t\in\mathcal{A}_k} P_{t,k}^{(n)}
@@ -140,17 +149,76 @@ Thus, we can directly compute the maximum likelihood estimator (MLE) for $\mu_k$
 \begin{equation}
     \mu_k^{(MLE)} = \frac{\#\mathcal{A}_k}{T}
 \end{equation}
+Note that in that case, we are no longer interested in the possible values of $m_{k,p}$ and $\sigma_{k,p}$.
 
-\subsubsection{Parameters initialisation}
+\subsubsection{Parameters initialisation}\label{parameters_initialisation}
 
+In this section, we will describe two methods on how to initialise the parameters for the EM algorithm, in other words, how to determine $\theta^{(0)} = \pars{\mu^{(0)}, \alpha^{(0), }m^{(0)}, \sigma^{(0)}}$.
 \paragraph{Random initialisation}
-
-TODO
+The first initialisation method is simply done by random sampling the parameters according to a specific uniform distribution:
+\begin{itemize}
+    \item $\mu^{(0)} \sim \Unif{\intervalleFF{\mu_{min}}{\mu_{max}}}$, e.g. $\mu_{min} = 0.1$ and $\mu_{max} = 5$;
+    
+    \item $\alpha^{(0)} \sim \Unif{\intervalleFF{\alpha_{min}}{\alpha_{max}}}$, e.g. $\alpha_{min} = 0.1$ and $\alpha_{max} = 5$;
+    
+    \item $m^{(0)} \sim \Unif{\intervalleFF{a}{b}}$, were $a$ and $b$ are the truncation values of the kernel, Eq.~\eqref{eq:kernel_trunc_norm};
+    
+    \item $\sigma^{(0)} \sim \Unif{\intervalleFF{\sigma_{min}}{\sigma_{max}}}$, e.g. $\sigma_{min} = 0.01$ and $\sigma_{max} = 1$.
+\end{itemize}
 
 \paragraph{Smart initialisation}
+Another method, more intuitive, would be to compute the empirical values of those parameters.
+We call this method \say{smart initialisation}.
+More specifically, the initial values of the parameters are computed as follow:
+\begin{itemize}
+     \item Let $\mathcal{D}_{k,p} \coloneqq \enstq{t-t_*^{(p)}(t)}{t\in\mathcal{A}_{k,p}} \cap \intervalleFF{a}{b}$ be the set of all empirical delays possibly linked to the task $p$.
+    Then, we define $m^{(0)}$ as the mean of the empirical delays:
+    \begin{equation}
+        m^{(0)} = \frac{1}{\#\mathcal{D}_{k,p}}\sum_{d \in \mathcal{D}_{k,p}} d
+    \end{equation}
+    where $\# A$ denotes the cardinality of the set $A$.
+    
+    \item Similarly, we define $\sigma^{(0)}$ as the standard deviation of the empirical delays:
+    \begin{equation}
+        \sigma^{(0)} = \sqrt{\frac{1}{\#\mathcal{D}_{k,p}}\sum_{d \in \mathcal{D}_{k,p}} \abs{d - m^{(0)}}^2}
+    \end{equation}
+    
+    \item The activations that do not lend on any kernel support come from the baseline intensity, which is fixed, so it is similar to say that those activations are the result of a homogeneous Poisson process.
+    Thus, to initialise the baseline value $\mu^{(0)}$, we simply compute the Poisson process parameter's estimator, which is the average number of activation over the process' duration:
+    \begin{equation}\label{eq:baseline_init}
+    \begin{split}
+        \mu^{(0)} &= \frac{\#\braces{\mathcal{A}_k \setminus \enstq{t}{t\in\mathcal{A}_{k,p}, a\leq t-t_*^{(p)}(t)\leq b}}}{T - n_p\pars{b-a}} \\
+        &= \frac{\#\mathcal{A}_k - \#\enstq{t}{t\in\mathcal{A}_{k,p}, a\leq t-t_*^{(p)}(t)\leq b}}{T- n_p\pars{b-a}}
+    \end{split}
+    \end{equation}
+    because there can be no duplicates, and where $n_p\pars{b-a}$ is the sum of all kernels support.
+    
+    \item Finally, we set $\alpha^{(0)}$ as follow:
+    \begin{equation}
+    \alpha^{(0)} = f(p_a)
+    \end{equation}
+    with
+    \begin{equation}
+        f(p_a) = - e^{\mu} \ln\pars{\frac{l(\mu) - p_a}{l(\mu)  - p_s}}
+    \end{equation}
+    and
+    \begin{equation}
+        l(\mu) = \pars{\frac{e^{\mu}-1}{5} + \frac{1}{1-p_s}}^{-1} + p_s
+    \end{equation}
+    where
+    \begin{equation}
+        p_a \coloneqq \frac{\#\enstq{t}{t\in\mathcal{A}_{k,p}, a\leq t-t_*^{(p)}(t)\leq b}}{\#\mathcal{A}_k}
+    \end{equation}
+    is the proportion of activations that lend in a kernel support, and 
+    \begin{equation}
+        p_s \coloneqq \frac{n_p\pars{b-a}}{T}
+    \end{equation}
+    is the ratio of all the kernels' support time over the total duration.
+    
+    More details on the role of the $\alpha$ coefficient and how its initialisation function was determined are presented in Appendix~\ref{app:role_alpha_coef}.
+    
+\end{itemize}
 
-TODO
 
-More details on the role of the $\alpha$ coefficient and how its initialisation function was determined are presented in Appendix~\ref{app:role_alpha_coef}
 
 

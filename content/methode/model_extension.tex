@@ -1,3 +1,36 @@
 \subsection{Model extension to multiple point processes drivers}\label{model_extension_multiple_pp}
 
-TODO: dire que l'on peut facilement étendre le modèle de façon à y include différents drivers pour un même atome. Mettre alors l'équation de la nouvelle fonction d'intensité, préciser que ça fait partie du futur work. Dire aussi que l'on peut éventuellement continuer en y incluant les activations des autres atomes, de façon à déterminer les liens temporels entre eux. Mettre alors de nouveau l'équation de l'intensité, où pour chaque atome, il y a un groupe de drivers (les différents tasks) et un groupe de processus "classiques" comme dans Hawkes
+In the above, the model presented considered only one potential \say{driver}, as for every atom, the intensity $\lambda_{k,p}$ was only influenced by the stimulus $p$.
+However, this assumption may be somewhat too restrictive.
+Indeed, it is quite possible that an atom $k$ to be stimulated by both stimuli $p$ and $p'$ at the same time.
+A first solution simply consists in combining both $p$ and $p'$ timestamps by defining $t^{(p, p')} \coloneqq t^{(p)} \cup t^{(p')}$, and thus,
+\begin{equation}\label{eq:intensity_combined_stimuli}
+    \lambda_{k,(p, p')}(t)  = \mu_k + \alpha_{k,(p, p')}\kappa_{k,(p, p')}(t - t_*^{(p, p')}(t))\1[t \geq t_1^{(p, p')}]
+\end{equation}
+This is this straightforward solution that is used in this work, and can easily be generalised to 3 or more \say{drivers}.
+
+However, the main flaw of this solution is that it blurs the individual effect of each stimulus on the considered atom.
+That is why when this solution is used, it is with done with stimuli that lead to similar reactions in the brain, such as two auditory stimuli, one on the left ear and the other on the right ear.
+A proposed solution, which it will be interesting to deal with more in depth in future work, is to take into the intensity function multiple \say{drivers} while keeping them separated in order to be able to distinguish their respective effect on the intensity, by no longer having a single coefficient $\alpha$ for this purpose.
+Let $\mathcal{P}$ be a (non-empty) set a drivers, e.g. $\mathcal{P} = \braces{p, p'}$, thus, the new intensity function can be written as follow:
+\begin{equation}
+    \lambda_{k,\mathcal{P}}(t)  = \mu_k + \sum_{p\in\mathcal{P}} \alpha_{k,p}\kappa_{k,p}(t - t_*^{(p)}(t))\1[t \geq t_1^{(p)}]
+\end{equation}
+
+It is possible to go even further by considering that the considered atom might eventually be influenced by the activation of other atoms, while keeping the assumption that it does not have a self-excitatory behaviour.
+Hence, the intensity function must include terms for such an influence.
+Let $\mathcal{K}$ be a (non-empty) set of atoms, thus, the new intensity function can be written as follow:
+\begin{equation}
+    \lambda_{k,\mathcal{K},\mathcal{P}}(t)  = \mu_k + \sum_{p\in\mathcal{P}} \alpha_{k,p}\kappa_{k,p}(t - t_*^{(p)}(t))\1[t \geq t_1^{(p)}] + \sum_{k'\in\mathcal{K}, k' \ne k} \beta_{k,k'} \varphi_{k,k'}\pars{t - \mathcal{A}_{k'}^*(t)}
+\end{equation}
+where $\mathcal{A}_{k'}^*(t) \coloneqq \max\enstq{t'}{t' \in \mathcal{A}_{k'}, t' \leq t}$ denotes the timestamp of the last activation on atom $k'$ at time $t$, $\beta_{k,k'}\in\R$ a coefficient taht allow to quantify the influence of atom $k'$ on atom $k$, and where $\varphi_{k,k'}$ is a kernel function to be specified.
+Note that the final idea is that $\mathcal{P}$ and $\mathcal{K}$ are the entire set of stimuli and atoms, respectively.
+
+The assumption of no self-excitatory behaviour can also be easily waived, thus the intensity function is only slightly modified, as follow:
+\begin{equation}
+    \lambda_{k,\mathcal{K},\mathcal{P}}(t)  = \mu_k + \sum_{p\in\mathcal{P}} \alpha_{k,p}\kappa_{k,p}(t - t_*^{(p)}(t))\1[t \geq t_1^{(p)}] + \sum_{k'\in\mathcal{K}} \beta_{k,k'} \varphi_{k,k'}\pars{t - \mathcal{A}_{k'}^*(t)}
+\end{equation}
+Note that in that case, if $k\in\mathcal{K}$, then the kernel $\varphi_{k,k}$ characterises this newly self-excitatory behaviour.
+
+As mentioned, those new approaches are not developed nor used later on in this report and will be the subject of future work.
+We only introduced them for the sake of completeness.

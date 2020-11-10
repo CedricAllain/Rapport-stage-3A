@@ -1,18 +1,23 @@
 \subsection{Data and notations}
 
-TODO : Faire la distinction entre le modèle théorique (processus guidé et processus "guideur"), et l'application : les z\_k sont les processus guidés, et dans l'application on les obtient de telle manière [...] 
+As explained before, the \textit{driven temporal point processes} approach consists in two sets of timestamps, one for the determinist process and one for the temporal point process that might be driven by the former.
+In what follows, we present this approach directly in the context of electrophysiology and more specifically to the temporal dependency between external stimuli and activation of atoms. 
+Note that one can easily generalise the approach to another situation.
+In doing so, particular attention must be paid to the choice of the kernel function and as well as to the various assumptions made.
 
-As explained before, the \textit{driven temporal point processes} approach consists in two sets of timestamps, one for 
-
-TODO: dans l'appllication M/EEG, dire que les multiples signaux reçus par les capteurs sont décomposés en K recurring patterns, où K est un hyperparamètre (TODO: dans les fais, comment est déterminé K, est-ce qu'on donne un nombre assez élevé afin d'être sûr de capter tous les atomes intéressants ?) et que l'on fait plusieurs type de stimulis, avec exemples : 
+As explained, in the problematic addressed in this report, the temporal point process corresponds to the temporal activations of an atom in the cortex, and the determinist process corresponds to the timestamps of a specific stimulus during an experiment.
+In what follows, notations will be as close as possible as ones used in \citep{jas2017learning, dupre2018multivariate, moreau2019distributed}.
+Thus, data used in our method are as follow.
 
 \begin{itemize}
-    \item $\braces{z_k}_{k=1,\dots,K}$: the family of the $K$ atoms' activation vector (an example of an activation vector is shown in Figure~\ref{fig:signal_decomposition}).
+    \item $\braces{z_k}_{k=1,\dots,K}$: the set of the $K$ atoms' activation vector obtained from the decomposition of the signals recorded by the multiple captors, as explained in Section~\ref{meeg_decomposition} where an example of an activation vector is shown in Figure~\ref{fig:signal_decomposition}\footnote{Note that $K$ is an hyper-parameter of the signal decomposition method that is generally fixed at a big enough value in order to capture all significant atoms, e.g. $K=40$.}.
     ${\forall k=1,\dots,K, z_k\in\R_+^\mathbf{T}}$, where $\mathbf{T}$ is the total number of possible timestamps.
     $\mathbf{T} \coloneqq \ent{T \times s_{freq}}$, where $T$ is the total duration of the experimentation (e.g., $T = \SI{3}{\minute}$), and $s_{freq}$ is the sampling frequency for the collect of MEG data (e.g., $s_{freq} = \SI{150}{\per\second}$), and where $\ent{x}$ denotes the bigger integer smaller or equal to $x$.
-    We define $\mathcal{A}_k \coloneqq \enstq{t\times s_{freq}^{-1}}{z_k(t)\geq\tau, t=1,\dots, \mathbf{T}}$ the set of all the timestamps of atom $k$'s activations, where $\tau$ is a pre-determined threshold used to filter out insignificant activations (e.g., $\tau = \num{0.7e-10}$).
+    We define $\mathcal{A}_k \coloneqq \enstq{t\times s_{freq}^{-1}}{z_k(t)\geq\tau, t=1,\dots, \mathbf{T}}$ as the set of all the timestamps of atom $k$'s activations, where $\tau$ is a pre-determined threshold used to filter out insignificant activations (e.g., $\tau = \num{0.7e-10}$).
     
-    \item $\braces{e_p}_{p=1,\dots,P}$: the family of the $P$ types of tasks performed during the experimentation
+    $\braces{z_k}_{k=1,\dots,K}$ are thus the temporal point processes we are interested in, in the sens that we would like to model their temporal behaviour.
+    
+    \item $\braces{e_p}_{p=1,\dots,P}$: the set of the $P$ types of stimuli, called \textit{tasks}, performed during the experiment, namely
     \begin{equation*}
         \forall t=1,\dots,\mathbf{T}, \quad e_p(t)=
         \left\{
@@ -22,13 +27,14 @@ TODO: dans l'appllication M/EEG, dire que les multiples signaux reçus par les c
 		\end{array}
 	\right.
     \end{equation*}
+
+    $\braces{e_p}_{p=1,\dots,P}$ are thus the determinist point processes that can drive the $\braces{z_k}_{k=1,\dots,K}$.
     
     \item $t^{(p)} \coloneqq \enstq{t\times s_{freq}^{-1}}{e_p(t)=1, t=1,\dots, \mathbf{T}}$ denotes all the timestamps when a task of type $p$ occurred.
     We thus have $t^{(p)} = \braces{t^{(p)}_1, \dots, t^{(p)}_{n_p}}$ sorted, i.e., $t^{(p)}_1 < t^{(p)}_2 < \dots < t^{(p)}_{n_p}$, where $n_p=\# t^{(p)}$ is the total number of task $p$ that has occurred during the experimentation, as $\# A$ denotes the cardinality of the set $A$.
 \end{itemize} 
 
-TODO: afin de préciser une dernière fois, les $e_p$ sont les determinist point process, qui drivent les $z_k$.
-Dans les faits, à la fin de l'expérience, on a toutes les données, les vecteurs $z_k$ sont tous connus.
-Notre but est alors de déterminer si, pour un coupe $(e_p, z_k)$ donné, si le vecteur d'activation a été influencé au stimulus, et donc si l'atome k est "lié" au stimulus p.
-A noter que l'on ne peux exhiber qu'une relation de corrélation et non pas de causalité, notamment dû au fait que l'on ne contrôle pas tout l'environnement, il peut donc exister des facteurs exhogènes non contrôlés par le modèle qui peuvent être à l'origine des activations sur $z_k$, et non pas $e_p$.
-Ainsi, dans un premmier temps, on ne considère un atome qu'à la lumière d'un seul stimulus à la fois.
+Note that in reality, at the end of the experiment, as all the data are collected, vectors $z_k$ are known.
+Our goal is to determine if an atom $k$ is \say{linked} to a stimulus $p$.
+To do so, for a given couple $(z_k, e_p)$, we would like to fit a model and based on the result, determine if the atom $k$ is, or not, linked to the stimulus $p$.
+Note that we can only exhibit correlation and not causality, particularly due to the fact that we cannot control the entire environment, there may therefore be exogenous factors not controlled by the model which may be at the origin of activations on $z_k$, different from $e_p$. 

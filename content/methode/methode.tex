@@ -1,13 +1,10 @@
 \section{Developed method: driven temporal point processes}\label{developed_method}
 
-TODO : notre méthode que l'on a développée, dire pourquoi elle est différente des processus de Hawkes, pourquoi on ne peut pas directement utiliser Tick.
-parler d'abord du cadre théorique de la nouvelle méthode : un processus temporel est drivé par un second, qui lui est déterministe et ne suit pas de modèle
-équivalent à un 2D-Hawkes process où seul 1 kernel sur 4 (du driver vers le drivé) serait non nul
-
-In the Hawkes processes model presented previously in Section~\ref{hawkes_processes}, the assumption is made that all the nodes might have an influence on all the other nodes, in addition of themselves.
-Recall that in our application to electrophisiology, and in particular to M/EEG data, we would like to capture the potential influence of an external stimulus on the activation of a specific recurring pattern in the cortex, called \textit{atoms}.
-It is easy to understand in that case that the influence goes only one way, from the stimulus process to the atom process.
-Furthermore, the stimulus process is determinist as it controlled by the experimentator and thus cannot be modeled as a classical temporal point process.
+In the Hawkes processes model previously presented in Section~\ref{hawkes_processes}, the assumption is made that all the nodes might have an influence on all the other nodes, in addition of themselves.
+Recall that in our application to electrophisiology, and in particular to M/EEG data, we would like to capture the potential influence of an external stimulus on the activation of a specific recurring pattern in the cortex, called \textit{atom}.
+It is easy to understand in that case that the influence can only goes one way, from the stimulus process to the atom process.
+Furthermore, the stimulus process is determinist as it is controlled by the experimentator and thus cannot be modeled as a classical temporal point process.
+If we would like to implement such a model using \texttt{Tick}, similarly as the Figure~\ref{fig:tick_hawkes_model}, three of the four kernels would be set to the null function, as the assumption is made that the atom do not have a self-excitatory behaviour\footnote{More details on the assumptions made later in Section~\ref{hypotheses}.}, thus only leaving the kernel connecting the stimulus to the atom as a non-null function.
 
 For those reasons, we derived a model from the Hawkes processes model, in which a determinist point process has a potential influence on a temporal point process.
 By \say{having an influence on}, we mean that an event on the determinist point process increases the probability to have an event on the temporal point process.

@@ -5,6 +5,14 @@
 \usepackage{subcaption} % Permet d’insérer au sein d’une figure des sous-figures, chacune d’entre elles disposant d’une légende, en plus de la légende principale.
 \newcommand{\source}[1]{\vspace{-8pt} \caption*{ Source: {#1}} }
 
+\makeatletter
+\newcommand*{\centerfloat}{%
+  \parindent \z@
+  \leftskip \z@ \@plus 1fil \@minus \textwidth
+  \rightskip\leftskip
+  \parfillskip \z@skip}
+\makeatother
+
 \usepackage{color}
 \usepackage{array}
 \usepackage[table]{xcolor}

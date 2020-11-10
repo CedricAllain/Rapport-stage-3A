@@ -9,7 +9,7 @@ A point process is a random element whose values are point patterns on a set $S$
 Let $X_S$ be the set of locally finite counting measures on $S$, and $\mathcal{N}_S$ the smallest $\sigma$-algebra on $X_S$ such that all point counts ${f_B: X_s \to \N, \omega \mapsto \#\pars{\omega \cap B}}$ are measurable for $B$ relatively compact in $\mathscr{B}$, where $\# A$ denotes the cardinality of the set $A$.
 A point process on $S$ is a measurable map $\xi$ from a probability space $\pars{\Omega, \mathcal{F}, \proba{}}$ to the measurable space $\pars{X_S, \mathcal{N}_S}$.
 
-Every realisation of a point process $\xi$ can be written as $\xi = \sum_{i=1}^n \dirac_{X_i}$, where $\dirac$ is the Dirac measure, $n$ is a integer-valued random variable and $X_i$'s are random elements of $S$.
+Every realisation of a point process $\xi$ can be written as $\xi = \sum_{i=1}^n \dirac_{X_i}$, where $\dirac$ is the Dirac measure, $n$ is an integer-valued random variable and $X_i$'s are random elements of $S$.
 A point process can be equivalently represented by a counting process $N\pars{B} \coloneqq \integ{B}{\xi (x)}{x}$ which basically is the number of event in each Borel subset $B\in\mathscr{B}$.
 The mean measure $M$ of a point process $\xi$ is a measure on $S$ that assigns to every $B\in\mathscr{B}$ the expected number of event of $\xi$ in $B$, i.e., $M\pars{B} \coloneqq \esp{N\pars{B}}$ for all $B\in\mathscr{B}$.
 
@@ -39,10 +39,10 @@ As $\dint N_t \coloneqq N_{t +\dint t} - N_t \in \braces{0,1}$ can only increase
 Hence, we can also think of the conditional intensity function $\lambda^*(t)$ as an instantaneous rate of events per time of unit.
 
 The \textit{homogeneous Poisson process} is the most simple temporal point process, which assumes that the events arrive at a constant rate, which corresponds to a constant intensity function $\lambda\pars{t \middle| \mathscr{F}_t} = \lambda^*(t) = \lambda > 0$.
-In other words, it describe a phenomenon with no memory and a constant probability of occurrence in which $N_{t + \Delta t} - N_t$ follows a Poisson distribution of parameter $\Delta t$ for any $\Delta t > 0$.
+In other words, it describes a phenomenon with no memory and a constant probability of occurrence in which $N_{t + \Delta t} - N_t$ follows a Poisson distribution of parameter $\Delta t$ for any $\Delta t > 0$.
 For this process, $\forall B \in \mathscr{B}\pars{\R}, M\pars{B} = \lambda \abs{B}$, where $\abs{\cdot}$ is the Lebesgue measure on $\pars{S, \mathscr{B}\pars{\R}}$.
 
-The \textit{inhomogeneous Poisson process} is a more general process, for which the conditional intensity function is not constant as it depends on $t$ but \textit{not} on the history, i.e. $\lambda\pars{t \middle| \mathscr{F}_t} = \lambda^*(t) = \lambda(t)$.
+The \textit{inhomogeneous Poisson process} is a more general process, for which the conditional intensity function is not constant as it depends on $t$ but \textit{not} on the history, i.e. ${\lambda\pars{t \middle| \mathscr{F}_t} = \lambda^*(t) = \lambda(t)}$.
 For this process, $M\pars{B} = \integ{B}{\lambda(x)}{x}$, for all $B \in \mathscr{B}\pars{\R}$.
 
 Let us denote $f^*(t) = f\pars{t \middle| \mathscr{F}_t}$ the conditional probability density function of the inter-event time, i.e., the probability that the next event will occur during the interval $\intervalleFO{t}{t+\dint t}$ conditioned on the history $\mathscr{F}_t$.
@@ -74,7 +74,7 @@ Finally, we get that
 
 \subsubsection{Poisson process and likelihood function}
 
-This section is taken and adapted from \citep[chap.~2, p.~19-23]{daley2003introduction} and aims to give a more in-depth presentation of the Poisson processes, with a focus on the computation of the likelihood function, as it is a crucial information for the repport.
+This section is taken and adapted from \citep[chap.~2, p.~19-23]{daley2003introduction} and aims to give a more in-depth presentation of the Poisson processes, with a focus on the computation of the likelihood function, as it is a crucial information for the report.
 
 The stationary Poisson process\footnote{What we previously called the homogeneous Poisson process.}, on the line is completely defined by the following equation, in which we use $N\intervalleOF{a_i}{b_i}$ to denote the number of events of the process falling in the half-open interval $\intervalleOF{a_i}{b_i}$ with $a_i < b_i \leq a_i+1$:
 \begin{equation}\label{eq:def_stationary_pp}
@@ -83,7 +83,7 @@ The stationary Poisson process\footnote{What we previously called the homogeneou
 
 This definition embodies three important features:
 \begin{itemize}
-    \item the number of points in each finite interval $\intervalleOF{a_i}{b_i}$ has a Poisson distribution of parameter $\lambda$;
+    \item the number of points in each finite interval $\intervalleOF{a_i}{b_i}$ has a Poisson distribution of parameter~$\lambda$;
     
     \item the numbers of points in disjoint intervals are independent random variables; and
     
@@ -127,7 +127,7 @@ Note that this result could also be obtained by using the Equation~\eqref{eq:f_s
 
 \subsubsection{Hawkes processes}\label{hawkes_processes}
 
-In this section, we give the main definitions and properties of Hawkes processes and multivariate Hawkes processes and set the notations that will be used if the in the rest of the report.
+In this section, we give the main definitions and properties of Hawkes processes and multivariate Hawkes processes and set the notations that will be used in the rest of the report.
 Hawkes processes~\citep{hawkes1971point, hawkes1974cluster} are temporal point processes in which the intensity depends on the process history with an excitation mechanism.
 They can be understood as the equivalent of auto-regressive time series models (AR) but in continuous time.
 This allows to study cross causality that might occur in one or several events series~\citep{bompaire2019machine}.
@@ -162,8 +162,9 @@ If the kernels are integrable, each entry of the $K\times K$ matrix ${\pars{\Phi
 \begin{figure}[h]
     \centering
     \includegraphics[scale=0.35]{pics/simu_multi_hawkes.png}
-    \caption{A realisation of a 2 nodes multivariate Hawkes process. The four excitation kernels are shown on the left hand side. The intensities are displayed on the right hand side (against time, up to time 20), where events are represented by coloured dots (blue corresponding to node 1 and orange to node 2).}
+    \caption{A realisation of a 2 nodes multivariate Hawkes process using \texttt{Tick} package. The four excitation kernels are shown on the left hand side. The intensities are displayed on the right hand side (against time, up to time 20), where events are represented by coloured dots (blue corresponding to node 1 and orange to node 2).}
     \source{\citep{bompaire2019machine}}
+    \label{fig:tick_hawkes_model}
 \end{figure}
 
 \paragraph{Kernels parametrisation}
@@ -178,5 +179,5 @@ A more general approach is the \textit{sum of exponentials kernels}~\citep{lemon
 \end{equation}
 
 Similarly, we can define the \textit{gaussian kernel} and the \textit{sum of gaussians kernels}.
-In python, the \texttt{Tick} package allow to easily manipulate Hawkes process with exponential and gaussian kernels~\citep{bompaire2019machine, bacry2017tick}.
+In python, the \texttt{Tick} package allows to easily manipulate Hawkes process with exponential and gaussian kernels~\citep{bompaire2019machine, bacry2017tick}.
 Other kernel functions are presented in~\citep{mehrdad2014hawkes}.
