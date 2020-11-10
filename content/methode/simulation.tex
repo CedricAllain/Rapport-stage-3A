@@ -1,16 +1,20 @@
 \subsection{Simulation}
 
-TODO: présenter pourquoi on utilise cet algorithme, citer aussi le papier pour l'algo de simulation des processus de hawkes, et redire pourquoi ce n'est pas exactement notre cas (on est déterministe sur un des processus temporel).
-Mettre l'algorithme de simulation des processus de Hawkes (thinning algo, Ogata) en annexe ?
+As mentioned before, the intensity for an atom $k$ modelled with a specific stimulus $p$ only depends on a baseline intensity that is fixed in time and on a term independent from the activations of the atom.
+Thus, as $e_p$ is deterministic, at every time $t \in \intervalleFF{0}{T}$, $\lambda_{k,p}(t)$ takes a deterministic value.
+As a result, it is possible to consider the temporal point process $z_k$ as an inhomogenous Poisson process, as its intensity function is deterministic and non-constant in time.
+For those reasons, in order to simulate $z_k$ data, we simply use the one-dimensional nonhomogeneous Poisson process algorithm described in \citep{lewis1979simulation, chen2016thinning} and detailed in Algorithm~\ref{algo:1d_inhomogenous_pp}.
 
-\cite{ogata1981lewis, chen2016thinning, lewis1979simulation}
+Starting from $s_0=0$, at each iteration the algorithm generates a new event candidate $s_{m+1}$ sampled from a homogeneous Poisson process of constant intensity $\bar{\lambda} \coloneqq \max_{0\leq t \leq T} \lambda(t)$.
+This candidate is either accepted with probability $\lambda(s_{m+1})/\Bar{\lambda}$ or discarded.
+
+Note that the self-excitatory behaviour and the multi-directional influence present in Hawkes processes model, but assumed to be non-existent in ours, make the simulation algorithm more complex, as mentioned in \citep{ogata1981lewis, chen2016thinning, bompaire2019machine}.
+Thus, if the assumptions concerning these two behavioural characteristics are amended, the simulation algorithm must be changed accordingly.
 
 \input{algorithms/1d_inhomogenous_pp}
 
-
 \paragraph{Remark} Thanks to hypotheses \refeq{eq:m_in_between} and \refeq{eq:separated_timestamps}, it is easy to compute $\bar{\lambda}$:
-\begin{equation}
+\begin{equation}\label{eq:max_lambda}
     \bar{\lambda} = \max_{0\leq t \leq T} \lambda(t) = \mu + \kappa(m)
 \end{equation}
-
-TODO: calculer la complexité de cet algorithme, ou du moins ça complexité maximale, comme fait dans la thèse de Martin
+Thus, it is easy to see that more events, atom's activation in our case, will be generated around times $t = t_i^{(p)} + m, i=1,\dots,n_p$ as the intensity is maximal at these points.

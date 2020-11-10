@@ -20,28 +20,35 @@
 
 \selectlanguage{english} % main language
 
+%\newpage
+%\thispagestyle{empty}
+%\mbox{}
+\newpage
 \setcounter{tocdepth}{3} % Modifie le niveau de profondeur de la table des matières
 % Si 3 : affiche jusqu'au niveau \subsubsection inclus
 % Table des matières
 \tableofcontents
+\listoffigures
 \newpage
 
 % Permet de modifier l'espace entre les paragraphes pour la suite du document
-\setlength{\parskip}{5pt}
+\setlength{\parskip}{1em}  % 5pt
 \setlist{after=\vspace{\parskip}}
+\setlength{\baselineskip}{1.5em}
 
 % Abstract(s)
 \input{content/abstract/abstract}
 % Content
 \selectlanguage{english} % main language
-\input{content/introduction/introduction}
-\input{content/methode/methode}
-\input{content/resultats/resultats}
-\input{content/discussion}
-\input{content/conclusion}
 
-% Ajout des annexes
-\include{annexes/annexes}
+\input{content/introduction/introduction}
+\include{content/methode/methode}
+\include{content/resultats/resultats}
+\include{content/discussion}
+\include{content/conclusion}
+
+
+
 
 % Présentation nouvelles commandes
 %\input{custom_commands/presentation_custom_commands}
@@ -52,6 +59,9 @@
 \addcontentsline{toc}{section}{References}
 \bibliographystyle{alpha} % apalike, plain, alpha
 \bibliography{references}
+
+% Ajout des annexes
+\include{annexes/annexes}
 
 % Notes de synthèse
 \input{summary_notes/summary_notes}

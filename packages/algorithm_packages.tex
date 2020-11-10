@@ -1,3 +1,7 @@
 % documentation of the package
 % https://distrib-coffee.ipsl.jussieu.fr/pub/mirrors/ctan/macros/latex/contrib/algorithm2e/doc/algorithm2e.pdf
 \usepackage[ruled,vlined]{algorithm2e}
+
+\newlength{\commentWidth}
+\setlength{\commentWidth}{7cm}
+\newcommand{\atcp}[1]{\tcp*[r]{\makebox[\commentWidth]{#1\hfill}}}

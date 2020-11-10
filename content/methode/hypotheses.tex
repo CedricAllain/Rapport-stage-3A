@@ -1,6 +1,10 @@
-\subsection{Hypotheses}
+\subsection{Hypotheses}\label{hypotheses}
 
-TODO: rapide paragraphe pour introduire les hypothèses que l'on fait, on s'inscrit quand même dans un cadre particulier lié à M/EEG
+In addition to the theoretical model presented above, we do some hypotheses due to the fact that we place ourselves in a particular frame of study, namely the study of M/EEG data.
+This therefore involves making some specific assumptions in order to take into account the physical reality that applies.
+In addition, certain assumptions facilitate the calculations, without prejudice to the veracity of the model.
+Those hypotheses are as follow.
+
 
 \begin{enumerate}
     \item In Equation~\eqref{eq:model_intensity}, the kernel's purpose is to capture the delay of the neurological response following an external stimulation.
@@ -21,6 +25,7 @@ TODO: rapide paragraphe pour introduire les hypothèses que l'on fait, on s'insc
         t_{i+1}^{(p)} - t_i^{(p)} > b, \quad \forall p=1,\dots,P, \quad \forall i=1,\dots, (n_p-1)
     \end{equation}
     In the M/EEG context, we say that the \textit{inter stimulus interval} (ISI) is larger than $b$.
+    In consequence, unlike the Hawkes processes model with exponential kernels where all past events influence the intensity, in our model only the last stimulus at time $t$ has a possible effect on the intensity at that time.
     
     Note that with this hypothesis, the intensity can be rewritten similar as a auto-regressive point process:
     \begin{equation}
@@ -45,11 +50,13 @@ TODO: rapide paragraphe pour introduire les hypothèses que l'on fait, on s'insc
     $$
     \Leftrightarrow T > \maxx{p=1,\dots,P} t_{n_p}^{(p)} + b
     $$
-    \item An atom can be driven by only one task, but a task can drive several atoms. TODO: oui et donc ? dire que c'est pour la première version du modèle
+    \item An atom is driven by only one task, i.e., we only consider the effect of one task for an atom in the model, as opposed to including several tasks.
     
     \item The baseline intensity $\mu_k$ is fixed in time.
-    TODO: dire que la baseline est là de façon à capter toutes les sources exhogènes d'activation, en précisant qu'il n'y a pas de caractère auto-excitatoire, comme dans les Hawkes processes, et qui est une caractéristique forte de ce modèle.
+    The baseline coefficient aims at capturing every exogenous sources of activation that are not controlled by the model, i.e., all other sources of activation apart from the considered task.
+    Other sources can be other tasks, other atoms, spontaneous activations or even sources we are not aware of.
+    Finally, it should be pointed out that, unlike Hawkes processes, we do not model any self-excitatory behaviour, i.e., an activation of the considered atom does not increase by itself the probability to have another activation.
 \end{enumerate}
 
-TODO: Préciser enfin que ces hypothèses peuvent facilement être remises en cause, amenant alors  la formulation d'un autre modèle, adapté, notamment sur le fait qu'il n'y ait qu'un driver, du caractère non-auto-excitatoire, etc.
-Notamment ces hypothèses sont remises en cause dans la partie \ref{model_extension_multiple_pp}, et snt discutées dans la partie Discusion/futur work
+These assumptions can easily be called into question, in particular their restrictive character on the control of endogenous sources of activation, as we only consider an atom along a unique task.
+That is why they we be discussed later on, and a brief overview of an extension of our model will be presented in Section~\ref{model_extension_multiple_pp}.

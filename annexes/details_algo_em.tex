@@ -63,8 +63,12 @@ hence,
 \end{split}
 \end{equation}
 
-\paragraph{Link to gradient descent}
-TODO: dire que l'on peut, pour les trois premiers coefficients, voir l'algorithme EM comme un GD (remttre rapidement la formule de mise à jour des coefs), où le step parameter $\nu$ vaut une certaine valeur
+\paragraph{Link to gradient descent} As done in \cite{lewis2011nonparametric}, it is possible to see the coefficient update in the EM bases algorithm as a gradient descent, in which the coefficients are updated as follow:
+\begin{equation}
+    x^{(n+1)} = x^{(n)} - \eta^{(n)} \nabla f(x^{(n)})
+\end{equation}
+where $f$ is the loss function to minimise, $\eta$ the step size and where $\nabla$ denotes the gradient.
+In our case, it can easily be done for the parameters $\mu$, $\alpha$ and $m$.
 
 \begin{equation}
     \mu_k^{(n+1)} - \mu_k^{(n)} = -\frac{\mu_k^{(n)}}{T} \partiald{}{\mu_k}\mathcal{L}_{k,p}\pars{\mu_k, \alpha_{k,p}, m_{k,p}, \sigma_{k,p}}
